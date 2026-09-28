@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORTRIP - Modernización</title>
+<style>
+body{font-family:Arial;margin:0;background:#f2f5f7;color:#17212b}
+header{background:#17324d;color:white;padding:25px;text-align:center}
+main{max-width:900px;margin:auto;padding:20px}
+.card{background:white;padding:20px;margin:15px 0;border-radius:12px;box-shadow:0 2px 8px #0002}
+h1{margin:0}h2{color:#17324d}
+button{background:#17324d;color:white;border:0;padding:12px 18px;border-radius:7px}
+input{width:100%;box-sizing:border-box;padding:12px;margin:8px 0;border:1px solid #bbb;border-radius:7px}
+.aviso{background:#eaf4fb;padding:15px;border-radius:8px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>CORTRIP</h1>
+<p>Sistema de modernización y gestión institucional</p>
+</header>
+
+<main>
+
+<div class="card">
+<h2>Bienvenido</h2>
+<p>
+Este proyecto busca modernizar la gestión de información de los socios
+de la Corporación de Tripulación de la Armada.
+</p>
+</div>
+
+<div class="card">
+<h2>Registro y actualización de información</h2>
+
+<div class="aviso">
+El envío de información no modifica automáticamente el padrón.
+Toda información queda pendiente de verificación administrativa.
+</div>
+
+<label>Cédula</label>
+<input type="text" id="cedula" maxlength="10">
+
+<label>Nombres y apellidos</label>
+<input type="text" id="nombre">
+
+<label>WhatsApp / celular</label>
+<input type="text" id="telefono">
+
+<label>Correo electrónico</label>
+<input type="email" id="correo">
+
+<button onclick="registrar()">Enviar información</button>
+
+<p id="mensaje"></p>
+</div>
+
+<div class="card">
+<h2>Estado del sistema</h2>
+<p>✔ Registro de información</p>
+<p>✔ Verificación administrativa</p>
+<p>✔ Control de fuentes documentales</p>
+<p>✔ Detección de duplicados</p>
+<p>✔ Historial y trazabilidad</p>
+<p>✔ Módulo electoral para una etapa posterior</p>
+</div>
+
+</main>
+
+<script>
+function registrar(){
+document.getElementById("mensaje").innerHTML=
+"<div class='aviso'><b>Gracias por registrarse.</b><br><br>"+
+"Su ingreso al sistema está pendiente por confirmar. "+
+"Una vez verificada la información proporcionada, se le notificará el resultado.</div>";
+}
+</script>
+
+</body>
+</html>
