@@ -1,18 +1,174 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CORTRIP - Modernización</title>
+<title>CORTRIP | Modernización y actualización de información</title>
+
 <style>
-body{font-family:Arial;margin:0;background:#f2f5f7;color:#17212b}
-header{background:#17324d;color:white;padding:25px;text-align:center}
-main{max-width:900px;margin:auto;padding:20px}
-.card{background:white;padding:20px;margin:15px 0;border-radius:12px;box-shadow:0 2px 8px #0002}
-h1{margin:0}h2{color:#17324d}
-button{background:#17324d;color:white;border:0;padding:12px 18px;border-radius:7px}
-input{width:100%;box-sizing:border-box;padding:12px;margin:8px 0;border:1px solid #bbb;border-radius:7px}
-.aviso{background:#eaf4fb;padding:15px;border-radius:8px}
+:root{
+--azul:#17324d;
+--azul2:#245579;
+--claro:#eef5f9;
+--fondo:#f4f7f9;
+--texto:#1d2933;
+--borde:#d6e0e7
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:var(--fondo);
+color:var(--texto);
+line-height:1.55
+}
+
+header{
+background:linear-gradient(135deg,var(--azul),var(--azul2));
+color:#fff;
+padding:42px 20px;
+text-align:center
+}
+
+header h1{
+font-size:42px;
+margin:0 0 8px
+}
+
+header p{
+font-size:19px;
+margin:0;
+opacity:.95
+}
+
+nav{
+background:#fff;
+border-bottom:1px solid var(--borde);
+padding:12px;
+text-align:center;
+position:sticky;
+top:0;
+z-index:5
+}
+
+nav a{
+color:var(--azul);
+text-decoration:none;
+font-weight:bold;
+margin:0 10px
+}
+
+main{
+max-width:1000px;
+margin:auto;
+padding:22px
+}
+
+.hero,.card{
+background:#fff;
+border-radius:16px;
+padding:26px;
+margin:18px 0;
+box-shadow:0 3px 12px #00000012
+}
+
+.hero{text-align:center}
+
+h2{
+color:var(--azul);
+margin-top:0
+}
+
+h3{color:var(--azul)}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px
+}
+
+.step{
+background:var(--claro);
+padding:18px;
+border-radius:12px
+}
+
+.num{
+display:inline-block;
+background:var(--azul);
+color:#fff;
+border-radius:50%;
+width:30px;
+height:30px;
+text-align:center;
+line-height:30px;
+font-weight:bold;
+margin-right:8px
+}
+
+.notice{
+background:#fff8df;
+border-left:5px solid #d4a72c;
+padding:16px;
+border-radius:8px
+}
+
+.info{
+background:var(--claro);
+padding:16px;
+border-radius:10px
+}
+
+label{
+display:block;
+font-weight:bold;
+margin-top:13px
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+margin-top:6px;
+border:1px solid #bfcbd4;
+border-radius:8px;
+font-size:16px;
+background:#fff
+}
+
+textarea{
+min-height:90px;
+resize:vertical
+}
+
+button{
+background:var(--azul);
+color:#fff;
+border:0;
+padding:13px 20px;
+border-radius:8px;
+font-size:16px;
+font-weight:bold;
+margin-top:18px
+}
+
+button:hover{
+background:var(--azul2)
+}
+
+footer{
+background:var(--azul);
+color:#fff;
+text-align:center;
+padding:28px 18px;
+margin-top:30px
+}
+
+.small{
+font-size:14px;
+color:#536471
+}
 </style>
 </head>
 
@@ -20,63 +176,294 @@ input{width:100%;box-sizing:border-box;padding:12px;margin:8px 0;border:1px soli
 
 <header>
 <h1>CORTRIP</h1>
-<p>Sistema de modernización y gestión institucional</p>
+<p>Sistema de modernización y actualización de información institucional</p>
 </header>
+
+<nav>
+<a href="#inicio">Inicio</a>
+<a href="#proceso">Cómo funciona</a>
+<a href="#registro">Registro</a>
+<a href="#consulta">Consulta</a>
+</nav>
 
 <main>
 
-<div class="card">
-<h2>Bienvenido</h2>
+<section id="inicio" class="hero">
+
+<h2>Bienvenido al sistema CORTRIP</h2>
+
 <p>
 Este proyecto busca modernizar la gestión de información de los socios
-de la Corporación de Tripulación de la Armada.
+de la Corporación de Tripulación de la Armada, facilitando la actualización,
+verificación y trazabilidad de los registros institucionales.
 </p>
+
+<div class="notice">
+
+<strong>Importante:</strong> la información proporcionada por un socio
+no modifica automáticamente el padrón. Todo registro queda sujeto a
+verificación administrativa y documental.
+
 </div>
 
-<div class="card">
+</section>
+
+
+<section id="proceso" class="card">
+
+<h2>¿Cómo funcionará?</h2>
+
+<div class="grid">
+
+<div class="step">
+<span class="num">1</span>
+<strong>Registro</strong>
+<br>
+El socio proporciona o actualiza su información.
+</div>
+
+<div class="step">
+<span class="num">2</span>
+<strong>Recepción</strong>
+<br>
+La información queda identificada como pendiente de verificación.
+</div>
+
+<div class="step">
+<span class="num">3</span>
+<strong>Verificación</strong>
+<br>
+La administración revisará la información y sus respaldos.
+</div>
+
+<div class="step">
+<span class="num">4</span>
+<strong>Confirmación</strong>
+<br>
+Una vez validada, la información podrá incorporarse al registro institucional correspondiente.
+</div>
+
+</div>
+</section>
+
+
+<section id="registro" class="card">
+
 <h2>Registro y actualización de información</h2>
 
-<div class="aviso">
-El envío de información no modifica automáticamente el padrón.
-Toda información queda pendiente de verificación administrativa.
+<div class="info">
+
+<strong>Esta es la primera versión pública.</strong>
+<br><br>
+
+El formulario presenta la estructura que utilizará el sistema.
+El almacenamiento seguro y la recepción real de información se habilitarán
+en la siguiente etapa, antes de solicitar datos reales a los socios.
+
 </div>
 
-<label>Cédula</label>
-<input type="text" id="cedula" maxlength="10">
 
-<label>Nombres y apellidos</label>
-<input type="text" id="nombre">
+<form onsubmit="mostrarAviso(event)">
 
-<label>WhatsApp / celular</label>
-<input type="text" id="telefono">
+<label for="cedula">Cédula</label>
+<input id="cedula" maxlength="10" inputmode="numeric" placeholder="10 dígitos">
 
-<label>Correo electrónico</label>
-<input type="email" id="correo">
 
-<button onclick="registrar()">Enviar información</button>
+<label for="nombre">Apellidos y nombres</label>
+<input id="nombre" placeholder="Ingrese sus apellidos y nombres">
+
+
+<label for="grado">Grado / categoría</label>
+<input id="grado" placeholder="Ingrese su grado o categoría">
+
+
+<label for="tipo">Tipo de socio</label>
+
+<select id="tipo">
+
+<option value="">Seleccione una opción</option>
+<option>Activo</option>
+<option>Pasivo</option>
+<option>Vitalicio</option>
+<option>Otro / por verificar</option>
+
+</select>
+
+
+<label for="telefono">WhatsApp / celular</label>
+<input id="telefono" inputmode="tel" placeholder="Número de contacto">
+
+
+<label for="correo">Correo electrónico</label>
+<input id="correo" type="email" placeholder="correo@ejemplo.com">
+
+
+<label for="ciudad">Ciudad de residencia</label>
+<input id="ciudad" placeholder="Ciudad">
+
+
+<label for="domicilio">Domicilio</label>
+<input id="domicilio" placeholder="Dirección de residencia">
+
+
+<label for="situacion">Situación actual</label>
+
+<select id="situacion">
+
+<option value="">Seleccione una opción</option>
+<option>Activo</option>
+<option>Pasivo</option>
+<option>Retirado</option>
+<option>Por verificar</option>
+<option>Otra situación</option>
+
+</select>
+
+
+<label for="unidad">Unidad militar / destino (si corresponde)</label>
+<input id="unidad" placeholder="Unidad y ciudad">
+
+
+<label for="ingreso">Fecha de ingreso a CORTRIP (si la conoce)</label>
+<input id="ingreso" type="date">
+
+
+<label for="observaciones">Observaciones</label>
+
+<textarea id="observaciones"
+placeholder="Información adicional que considere importante"></textarea>
+
+
+<button type="submit">Continuar con el registro</button>
 
 <p id="mensaje"></p>
+
+</form>
+
+
+<p class="small">
+
+No utilice esta versión pública para ingresar información real todavía.
+La conexión con almacenamiento seguro será habilitada antes de iniciar
+el registro oficial de los socios.
+
+</p>
+
+</section>
+
+
+<section id="consulta" class="card">
+
+<h2>Consulta de estado del registro</h2>
+
+<p>
+En la siguiente etapa cada socio podrá consultar el estado de su solicitud
+mediante un mecanismo seguro de identificación.
+</p>
+
+<div class="grid">
+
+<div class="step">
+<strong>Recibido</strong>
+<br>
+La información fue enviada.
 </div>
 
-<div class="card">
-<h2>Estado del sistema</h2>
-<p>✔ Registro de información</p>
-<p>✔ Verificación administrativa</p>
-<p>✔ Control de fuentes documentales</p>
-<p>✔ Detección de duplicados</p>
-<p>✔ Historial y trazabilidad</p>
-<p>✔ Módulo electoral para una etapa posterior</p>
+<div class="step">
+<strong>En verificación</strong>
+<br>
+La administración está revisando los datos.
 </div>
+
+<div class="step">
+<strong>Documentación pendiente</strong>
+<br>
+Se requiere respaldo adicional.
+</div>
+
+<div class="step">
+<strong>Confirmado</strong>
+<br>
+La información fue validada administrativamente.
+</div>
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>Principios del proyecto</h2>
+
+<div class="grid">
+
+<div>
+<strong>✓ Trazabilidad</strong>
+<br>
+Cada modificación deberá conservar su historial.
+</div>
+
+<div>
+<strong>✓ Verificación</strong>
+<br>
+El registro del socio no sustituye la revisión administrativa.
+</div>
+
+<div>
+<strong>✓ Fuentes</strong>
+<br>
+Los datos deberán conservar la referencia de su origen.
+</div>
+
+<div>
+<strong>✓ Control</strong>
+<br>
+La administración tendrá herramientas para revisar duplicados e inconsistencias.
+</div>
+
+<div>
+<strong>✓ Evolución</strong>
+<br>
+El módulo electoral será desarrollado como una etapa independiente.
+</div>
+
+<div>
+<strong>✓ Protección</strong>
+<br>
+Los datos reales no se publicarán en el repositorio público.
+</div>
+
+</div>
+
+</section>
 
 </main>
 
+
+<footer>
+
+<strong>CORTRIP</strong>
+<br>
+
+Proyecto de modernización y actualización de información institucional
+
+</footer>
+
+
 <script>
-function registrar(){
+
+function mostrarAviso(e){
+
+e.preventDefault();
+
 document.getElementById("mensaje").innerHTML=
-"<div class='aviso'><b>Gracias por registrarse.</b><br><br>"+
-"Su ingreso al sistema está pendiente por confirmar. "+
-"Una vez verificada la información proporcionada, se le notificará el resultado.</div>";
+
+'<div class="notice"><strong>Formulario de demostración.</strong><br><br>'+
+'Esta versión todavía no almacena información. La conexión segura con la base de datos será implementada antes de iniciar el registro oficial de los socios.</div>';
+
 }
+
 </script>
 
 </body>
