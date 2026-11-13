@@ -1,37 +1,28 @@
-export async function onRequestPost({ request, env, next }) {
-  const origin = request.headers.get('origin');
-  const allowedOrigin = env.ALLOWED_ORIGIN || '';
-  const allowedHostname = env.ALLOWED_HOSTNAME || '';
+export async function onRequestPost({ request, env }) {
+  const origin = request.headers.get('Origin');
+  const allowedOrigin = env.ALLOWED_ORIGIN;
+  const allowedHostname = env.ALLOWED_HOSTNAME;
+  const headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
+  const respond = (body, status) => new Response(JSON.stringify(body), { status, headers });
 
-  if (!allowedOrigin || !allowedHostname) {
-    return new Response(JSON.stringify({ error: 'Servicio temporalmente no disponible.' }), {
-      status: 503,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  if (!allowedOrigin || !allowedHostname || !env.TURNSTILE_SECRET_KEY || !env.DB) {
+    return respond({ error: 'El servicio de registro aún no está configurado.' }, 503);
   }
-
-  if (origin !== allowedOrigin) {
-    return new Response(JSON.stringify({ error: 'Origen no permitido.' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  if (origin !== allowedOrigin) return respond({ error: 'Origen no permitido.' }, 403);
+  if (!(request.headers.get('content-type') || '').toLowerCase().startsWith('application/json')) {
+    return respond({ error: 'Formato de solicitud no válido.' }, 415);
   }
-
-  if (!request.headers.get('content-type')?.includes('application/json')) {
-    return new Response(JSON.stringify({ error: 'Formato de solicitud no válido.' }), {
-      status: 415,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  const contentLength = Number(request.headers.get('content-length') || '0');
+  if (contentLength > 16384) return respond({ error: 'Solicitud demasiado grande.' }, 413);
 
   let body;
   try {
-    body = await request.json();
+    const raw = await request.text();
+    if (raw.length > 16384) return respond({ error: 'Solicitud demasiado grande.' }, 413);
+    body = JSON.parse(raw);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('Invalid body');
   } catch {
-    return new Response(JSON.stringify({ error: 'Solicitud inválida.' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return respond({ error: 'Solicitud inválida.' }, 400);
   }
 
   const cleanString = (value, maxLength) => {
@@ -39,107 +30,78 @@ export async function onRequestPost({ request, env, next }) {
     const trimmed = value.trim();
     return trimmed.length > 0 && trimmed.length <= maxLength ? trimmed : null;
   };
-
-  const token = cleanString(body?.captchaToken, 4096);
-  const cedula = cleanString(body?.cedula, 10);
-  const nombre = cleanString(body?.nombre, 160);
-  const telefono = cleanString(body?.telefono, 40);
-  const correo = body?.correo === '' || body?.correo == null ? null : cleanString(body?.correo, 254);
-  const ciudad = cleanString(body?.ciudad, 100);
-  const pais = cleanString(body?.pais, 100);
-  const situacionDeclarada = cleanString(body?.situacionDeclarada, 120);
-  const categoria = body?.categoria === '' ? null : cleanString(body?.categoria, 60);
-  const observaciones = body?.observaciones === '' || body?.observaciones == null ? null : cleanString(body?.observaciones, 1000);
-  const consentimiento = body?.consentimiento === 'on' || body?.consentimiento === true;
-
+  const token = cleanString(body.captchaToken, 4096);
+  const cedula = cleanString(body.cedula, 10);
+  const nombre = cleanString(body.nombre, 160);
+  const telefono = cleanString(body.telefono, 40);
+  const correo = body.correo === '' || body.correo == null ? null : cleanString(body.correo, 254);
+  const ciudad = cleanString(body.ciudad, 100);
+  const pais = cleanString(body.pais, 100);
+  const situacion = cleanString(body.situacionDeclarada, 120);
+  const categoria = body.categoria === '' ? null : cleanString(body.categoria, 60);
+  const observaciones = body.observaciones === '' || body.observaciones == null ? null : cleanString(body.observaciones, 1000);
+  const consentimiento = body.consentimiento === 'on' || body.consentimiento === true;
   const situaciones = new Set([
     'Me considero socio/a y deseo actualizar mis datos',
     'Me incorporé después de 2012 y solicito que se revise mi registro',
     'Presenté una renuncia voluntaria',
     'Fui separado/a o expulsado/a y solicito que se revise mi situación',
     'No estoy seguro/a; solicito cotejo',
-    'Otra situación; explicaré solo lo necesario en observaciones',
+    'Otra situación; explicaré solo lo necesario en observaciones'
   ]);
-
   const categorias = new Set(['Activo', 'Pasivo', 'Vitalicio', 'Otro / por verificar', 'Prefiero no indicar / no sé']);
   const correoValido = correo === null || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
-
-  if (
-    !token || !consentimiento || !cedula || !/^[0-9]{10}$/.test(cedula) || !nombre || nombre.length < 2 ||
-    !telefono || telefono.length < 5 || !ciudad || !pais || !situaciones.has(situacionDeclarada) ||
-    !correoValido || (body?.categoria && (!categoria || !categorias.has(categoria)))
-  ) {
-    return new Response(JSON.stringify({ error: 'Revisa los campos e intenta nuevamente.' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  if (!token || !consentimiento || !cedula || !/^[0-9]{10}$/.test(cedula) || !nombre || nombre.length < 2 ||
+      !telefono || telefono.length < 5 || !ciudad || !pais || !situaciones.has(situacion) || !correoValido ||
+      (body.correo && !correo) || (body.categoria && (!categoria || !categorias.has(categoria))) ||
+      (body.observaciones && !observaciones)) {
+    return respond({ error: 'Revisa los campos e intenta nuevamente.' }, 400);
   }
 
-  const captchaResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      secret: env.TURNSTILE_SECRET_KEY,
-      response: token,
-      remoteip: request.headers.get('cf-connecting-ip') || '',
-    }).toString(),
-  });
-
-  const captchaData = await captchaResult.json();
-  if (!captchaData.success || captchaData.hostname !== allowedHostname || captchaData.action !== 'registro') {
-    return new Response(JSON.stringify({ error: 'No se pudo validar la verificación de seguridad.' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
+  try {
+    const verify = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET_KEY,
+        response: token,
+        remoteip: request.headers.get('CF-Connecting-IP') || ''
+      }),
+      signal: AbortSignal.timeout(8000)
     });
+    if (!verify.ok) return respond({ error: 'No se pudo validar la verificación de seguridad.' }, 400);
+    const captcha = await verify.json();
+    if (!captcha.success || captcha.hostname !== allowedHostname || captcha.action !== 'registro') {
+      return respond({ error: 'No se pudo validar la verificación de seguridad.' }, 400);
+    }
+
+    const result = await env.DB.prepare(`
+      INSERT INTO solicitudes_actualizacion (
+        cedula, nombre, telefono, correo, ciudad, pais, situacion_declarada,
+        categoria, observaciones, consentimiento, aviso_version
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, '2026-11-v1')
+    `).bind(cedula, nombre, telefono, correo, ciudad, pais, situacion, categoria, observaciones).run();
+    if (!result.success) return respond({ error: 'No se pudo guardar la solicitud. Inténtalo más tarde.' }, 500);
+    return respond({ received: true }, 201);
+  } catch {
+    return respond({ error: 'El servicio no está disponible temporalmente.' }, 503);
   }
-
-  const insert = await env.DB.prepare(`
-    INSERT INTO solicitudes_actualizacion (
-      cedula, nombre, telefono, correo, ciudad, pais, situacion_declarada,
-      categoria, observaciones, consentimiento, aviso_version
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).bind(
-    cedula,
-    nombre,
-    telefono,
-    correo,
-    ciudad,
-    pais,
-    situacionDeclarada,
-    categoria,
-    observaciones,
-    1,
-    '2026-11-v1'
-  ).run();
-
-  if (insert.error) {
-    return new Response(JSON.stringify({ error: 'No se pudo recibir la solicitud. Inténtalo más tarde.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  return new Response(JSON.stringify({ received: true }), {
-    status: 201,
-    headers: { 'Content-Type': 'application/json' },
-  });
 }
 
-export async function onRequestOptions({ request }) {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': request.headers.get('origin') || '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'content-type, origin',
-      'Access-Control-Max-Age': '86400',
-    },
-  });
+export async function onRequestOptions({ request, env }) {
+  if (request.headers.get('Origin') !== env.ALLOWED_ORIGIN) return new Response(null, { status: 403 });
+  return new Response(null, { status: 204, headers: {
+    'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin'
+  } });
 }
 
 export async function onRequest({ request }) {
   return new Response(JSON.stringify({ error: 'Método no permitido.' }), {
     status: 405,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
   });
 }

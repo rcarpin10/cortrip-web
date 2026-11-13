@@ -1,0 +1,6 @@
+# No confirmar despliegue. Los secretos se configuran en Cloudflare Pages.
+.env
+.dev.vars
+.wrangler/
+node_modules/
+.DS_Store

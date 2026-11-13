@@ -3,11 +3,12 @@ compatibility_date = "2026-11-13"
 pages_build_output_dir = "."
 
 [vars]
-ALLOWED_ORIGIN = "https://rcarpin10.github.io"
-ALLOWED_HOSTNAME = "rcarpin10.github.io"
-TURNSTILE_SECRET_KEY = "REEMPLAZAR_CON_SECRET"
+# Actualizar estos valores al desplegar el sitio en Cloudflare Pages.
+ALLOWED_ORIGIN = "https://TU_DOMINIO_PAGES"
+ALLOWED_HOSTNAME = "TU_HOSTNAME_PAGES"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "cortrip-registro"
 database_id = "REEMPLAZAR_CON_DATABASE_ID"
+migrations_dir = "migrations"
