@@ -1,24 +1,33 @@
 export async function onRequestPost({ request, env }) {
-  const origin = request.headers.get('Origin');
+  const headers = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'X-Content-Type-Options': 'nosniff'
+  };
+  const respond = (body, status) => new Response(JSON.stringify(body), { status, headers });
   const allowedOrigin = env.ALLOWED_ORIGIN;
   const allowedHostname = env.ALLOWED_HOSTNAME;
-  const headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
-  const respond = (body, status) => new Response(JSON.stringify(body), { status, headers });
 
   if (!allowedOrigin || !allowedHostname || !env.TURNSTILE_SECRET_KEY || !env.DB) {
     return respond({ error: 'El servicio de registro aún no está configurado.' }, 503);
   }
-  if (origin !== allowedOrigin) return respond({ error: 'Origen no permitido.' }, 403);
+  if (request.headers.get('Origin') !== allowedOrigin) return respond({ error: 'Origen no permitido.' }, 403);
   if (!(request.headers.get('content-type') || '').toLowerCase().startsWith('application/json')) {
     return respond({ error: 'Formato de solicitud no válido.' }, 415);
   }
+
   const contentLength = Number(request.headers.get('content-length') || '0');
   if (contentLength > 16384) return respond({ error: 'Solicitud demasiado grande.' }, 413);
+  let raw;
+  try {
+    raw = await request.text();
+  } catch {
+    return respond({ error: 'Solicitud inválida.' }, 400);
+  }
+  if (raw.length > 16384) return respond({ error: 'Solicitud demasiado grande.' }, 413);
 
   let body;
   try {
-    const raw = await request.text();
-    if (raw.length > 16384) return respond({ error: 'Solicitud demasiado grande.' }, 413);
     body = JSON.parse(raw);
     if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('Invalid body');
   } catch {
@@ -39,7 +48,9 @@ export async function onRequestPost({ request, env }) {
   const pais = cleanString(body.pais, 100);
   const situacion = cleanString(body.situacionDeclarada, 120);
   const categoria = body.categoria === '' ? null : cleanString(body.categoria, 60);
-  const observaciones = body.observaciones === '' || body.observaciones == null ? null : cleanString(body.observaciones, 1000);
+  const observaciones = body.observaciones === '' || body.observaciones == null
+    ? null
+    : cleanString(body.observaciones, 1000);
   const consentimiento = body.consentimiento === 'on' || body.consentimiento === true;
   const situaciones = new Set([
     'Me considero socio/a y deseo actualizar mis datos',

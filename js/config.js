@@ -1,7 +1,8 @@
 window.CORTRIP_CONFIG = Object.freeze({
-  // No activar hasta completar despliegue, aviso, pruebas y revisión de acceso a los datos.
+  // Mantener desactivado hasta desplegar, completar el aviso y pasar las pruebas.
   registrationEnabled: false,
+  // Pages Function del mismo dominio; no apunta a GitHub Pages.
   registrationEndpoint: '/api/registro',
-  // Clave pública de Turnstile: configurar después de crear el widget para el dominio final.
+  // Site key pública de Turnstile; completar al crear el widget del dominio final.
   turnstileSiteKey: ''
 });

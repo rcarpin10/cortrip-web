@@ -3,7 +3,7 @@ compatibility_date = "2026-11-13"
 pages_build_output_dir = "."
 
 [vars]
-# Completar con el dominio HTTPS exacto al crear el proyecto Cloudflare Pages.
+# Completar con el dominio HTTPS exacto después de crear Cloudflare Pages.
 ALLOWED_ORIGIN = "https://TU_DOMINIO_PAGES"
 ALLOWED_HOSTNAME = "TU_HOSTNAME_PAGES"
 

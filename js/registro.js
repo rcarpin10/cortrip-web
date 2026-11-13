@@ -50,8 +50,8 @@
     document.head.appendChild(script);
   }
 
-  const validEndpoint = config.registrationEndpoint === '/api/registro';
-  const ready = config.registrationEnabled === true && validEndpoint && Boolean(config.turnstileSiteKey);
+  const ready = config.registrationEnabled === true &&
+    config.registrationEndpoint === '/api/registro' && Boolean(config.turnstileSiteKey);
   setReady(ready);
   if (ready) {
     statusBox.textContent = 'El servicio está habilitado. Lee el aviso completo antes de enviar tus datos.';
