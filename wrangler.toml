@@ -1,0 +1,13 @@
+name = "cortrip-web"
+compatibility_date = "2026-11-13"
+pages_build_output_dir = "."
+
+[vars]
+ALLOWED_ORIGIN = "https://rcarpin10.github.io"
+ALLOWED_HOSTNAME = "rcarpin10.github.io"
+TURNSTILE_SECRET_KEY = "REEMPLAZAR_CON_SECRET"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cortrip-registro"
+database_id = "REEMPLAZAR_CON_DATABASE_ID"
