@@ -1,568 +1,104 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CORTRIP | Modernización y actualización de información</title>
-
-<style>
-:root{
---azul:#17324d;
---azul2:#245579;
---claro:#eef5f9;
---fondo:#f4f7f9;
---texto:#1d2933;
---borde:#d6e0e7;
---verde:#1f8f5f;
---rojo:#b94a48;
-}
-
-*{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:var(--fondo);
-color:var(--texto);
-line-height:1.55
-}
-
-header{
-background:linear-gradient(135deg,var(--azul),var(--azul2));
-color:#fff;
-padding:42px 20px;
-text-align:center
-}
-
-header h1{
-font-size:42px;
-margin:0 0 8px
-}
-
-header p{
-font-size:19px;
-margin:0;
-opacity:.95
-}
-
-nav{
-background:#fff;
-border-bottom:1px solid var(--borde);
-padding:12px;
-text-align:center;
-position:sticky;
-top:0;
-z-index:5
-}
-
-nav a{
-color:var(--azul);
-text-decoration:none;
-font-weight:bold;
-margin:0 10px
-}
-
-main{
-max-width:1000px;
-margin:auto;
-padding:22px
-}
-
-.hero,.card{
-background:#fff;
-border-radius:16px;
-padding:26px;
-margin:18px 0;
-box-shadow:0 3px 12px #00000012
-}
-
-.hero{text-align:center}
-
-h2{
-color:var(--azul);
-margin-top:0
-}
-
-h3{color:var(--azul)}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:16px
-}
-
-.step{
-background:var(--claro);
-padding:18px;
-border-radius:12px
-}
-
-.num{
-display:inline-block;
-background:var(--azul);
-color:#fff;
-border-radius:50%;
-width:30px;
-height:30px;
-text-align:center;
-line-height:30px;
-font-weight:bold;
-margin-right:8px
-}
-
-.notice{
-background:#fff8df;
-border-left:5px solid #d4a72c;
-padding:16px;
-border-radius:8px
-}
-
-.info{
-background:var(--claro);
-padding:16px;
-border-radius:10px
-}
-
-label{
-display:block;
-font-weight:bold;
-margin-top:13px
-}
-
-input,select,textarea{
-width:100%;
-padding:12px;
-margin-top:6px;
-border:1px solid #bfcbd4;
-border-radius:8px;
-font-size:16px;
-background:#fff
-}
-
-textarea{
-min-height:90px;
-resize:vertical
-}
-
-button{
-background:var(--azul);
-color:#fff;
-border:0;
-padding:13px 20px;
-border-radius:8px;
-font-size:16px;
-font-weight:bold;
-margin-top:18px;
-cursor:pointer
-}
-
-button:hover{
-background:var(--azul2)
-}
-
-button.secondary{
-background:var(--verde);
-margin-top:10px
-}
-
-button.secondary:hover{
-background:#177549
-}
-
-button.danger{
-background:var(--rojo);
-margin-top:10px
-}
-
-button.danger:hover{
-background:#8a2d2b
-}
-
-.checkbox-row{
-margin-top:14px;
-display:flex;
-align-items:flex-start;
-gap:10px
-}
-
-.checkbox-row input{
-width:auto;
-margin-top:4px
-}
-
-.checkbox-row label{
-margin-top:0;
-font-weight:normal
-}
-
-footer{
-background:var(--azul);
-color:#fff;
-text-align:center;
-padding:28px 18px;
-margin-top:30px
-}
-
-.small{
-font-size:14px;
-color:#536471
-}
-
-.lista-registros{
-margin-top:16px;
-background:var(--claro);
-border:1px solid #d4dee7;
-border-radius:10px;
-padding:12px
-}
-
-.lista-registros ul{
-margin:12px 0 0;
-padding-left:18px
-}
-
-.lista-registros li{
-margin-bottom:8px
-}
-
-.mensaje-ok{
-background:#e8f7f0;
-border:1px solid #bfe6d3;
-color:#1d6f50;
-padding:12px 14px;
-border-radius:8px;
-margin-top:12px
-}
-
-.mensaje-error{
-background:#fdeaea;
-border:1px solid #efc1c1;
-color:#7f2d2d;
-padding:12px 14px;
-border-radius:8px;
-margin-top:12px
-}
-</style>
+<meta name="description" content="Iniciativa voluntaria para actualizar información de contacto de socios de CORTRIP.">
+<title>CORTRIP | Actualización voluntaria de información</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
-
 <header>
-<h1>CORTRIP</h1>
-<p>Sistema de modernización y actualización de información institucional</p>
+  <h1>CORTRIP</h1>
+  <p>Sistema de modernización y actualización de información institucional</p>
 </header>
-
-<nav>
-<a href="#inicio">Inicio</a>
-<a href="#proceso">Cómo funciona</a>
-<a href="#registro">Registro</a>
-<a href="#consulta">Consulta</a>
+<nav aria-label="Navegación principal">
+  <a href="#inicio">Inicio</a>
+  <a href="#proceso">Cómo funciona</a>
+  <a href="#registro">Actualización voluntaria</a>
+  <a href="#principios">Principios</a>
 </nav>
-
 <main>
+  <section id="inicio" class="hero">
+    <h2>Un primer paso para actualizar la información</h2>
+    <p>Esta iniciativa busca reunir voluntariamente información actualizada de contacto de los socios de la Corporación de Tripulación de la Armada (CORTRIP), incluidos quienes viven fuera del Ecuador, y organizarla para ponerla a disposición de una futura administración competente.</p>
+    <div class="notice"><strong>Alcance:</strong> este registro independiente no reemplaza el padrón oficial, no certifica la calidad de socio y no modifica registros institucionales. La información requerirá revisión y verificación por la administración que corresponda.</div>
+  </section>
 
-<section id="inicio" class="hero">
+  <section id="proceso" class="card">
+    <h2>¿Cómo funcionará?</h2>
+    <div class="grid">
+      <article class="step"><span class="num">1</span><strong>Participación voluntaria</strong><br>El socio decide si desea aportar o actualizar sus datos.</article>
+      <article class="step"><span class="num">2</span><strong>Recepción segura</strong><br>Al habilitarse el servicio, el formulario enviará los datos a un servicio privado; no se guardarán en este navegador.</article>
+      <article class="step"><span class="num">3</span><strong>Organización</strong><br>La información se ordenará para facilitar su revisión posterior.</article>
+      <article class="step"><span class="num">4</span><strong>Entrega y verificación</strong><br>La información podrá ponerse a disposición de una futura administración para su revisión.</article>
+    </div>
+  </section>
 
-<h2>Bienvenido al sistema CORTRIP</h2>
+  <section id="registro" class="card">
+    <h2>Actualización voluntaria de datos</h2>
+    <div id="estadoServicio" class="info" role="status" aria-live="polite"></div>
+    <p>Los campos con * son necesarios para recibir la solicitud. Completa únicamente información que desees proporcionar.</p>
 
-<p>
-Este proyecto busca modernizar la gestión de información de los socios
- de la Corporación de Tripulación de la Armada, facilitando la actualización,
- verificación y trazabilidad de los registros institucionales.
-</p>
+    <form id="formRegistro" novalidate>
+      <label for="cedula">Número de cédula *</label>
+      <input id="cedula" name="cedula" autocomplete="off" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 dígitos" required>
+      <small>Se solicita para facilitar el cotejo posterior con registros de socios; el envío no certifica identidad ni calidad de socio.</small>
 
-<div class="notice">
+      <label for="nombre">Apellidos y nombres *</label>
+      <input id="nombre" name="nombre" autocomplete="name" maxlength="160" placeholder="Nombres completos" required>
 
-<strong>Importante:</strong> la información proporcionada por un socio
- no modifica automáticamente el padrón. Todo registro queda sujeto a
- verificación administrativa y documental.
+      <label for="telefono">WhatsApp o celular *</label>
+      <input id="telefono" name="telefono" autocomplete="tel" type="tel" maxlength="40" placeholder="Incluya código de país si reside fuera de Ecuador" required>
 
-</div>
+      <label for="correo">Correo electrónico (opcional)</label>
+      <input id="correo" name="correo" autocomplete="email" type="email" maxlength="254" placeholder="nombre@ejemplo.com">
 
-</section>
+      <div class="grid fields-grid">
+        <div><label for="ciudad">Ciudad de residencia *</label><input id="ciudad" name="ciudad" autocomplete="address-level2" maxlength="100" required></div>
+        <div><label for="pais">País de residencia *</label><input id="pais" name="pais" autocomplete="country-name" maxlength="100" value="Ecuador" required></div>
+      </div>
 
+      <label for="categoria">Categoría o tipo de socio (opcional)</label>
+      <select id="categoria" name="categoria">
+        <option value="">Prefiero no indicar / no sé</option>
+        <option>Activo</option><option>Pasivo</option><option>Vitalicio</option><option>Otro / por verificar</option>
+      </select>
 
-<section id="proceso" class="card">
+      <label for="observaciones">Información adicional (opcional)</label>
+      <textarea id="observaciones" name="observaciones" maxlength="1000" placeholder="No incluya contraseñas, documentos ni información especialmente sensible."></textarea>
 
-<h2>¿Cómo funcionará?</h2>
+      <div class="privacy-box">
+        <h3>Aviso de privacidad de esta iniciativa</h3>
+        <p>Los datos se solicitan voluntariamente para organizar una actualización independiente de información de contacto, facilitar un cotejo posterior y, cuando exista una administración competente, ponerlos a su disposición para revisión y eventual actualización institucional. Esta recopilación no constituye un padrón oficial ni una validación de afiliación.</p>
+        <p>Antes de habilitar el envío deberán publicarse aquí la identidad y contacto del responsable de esta recopilación, el proveedor y país donde se alojarán los datos, el plazo de conservación y el canal para ejercer derechos de acceso, rectificación, eliminación u oposición conforme a la normativa aplicable. La entrega a una futura administración se limitará a la finalidad descrita.</p>
+        <p id="avisoResponsable"><strong>Estado:</strong> el registro en línea aún no está habilitado. No ingreses datos reales mientras el aviso y el servicio de almacenamiento no estén configurados.</p>
+        <div class="checkbox-row">
+          <input type="checkbox" id="consentimiento" name="consentimiento" required>
+          <label for="consentimiento">He leído el aviso y, cuando el registro esté habilitado con la información completa del responsable, autorizo voluntariamente el tratamiento descrito. *</label>
+        </div>
+      </div>
 
-<div class="grid">
+      <div id="turnstileContainer" class="captcha-container" hidden>
+        <div id="turnstileWidget"></div>
+      </div>
+      <button id="submitButton" type="submit" disabled>Registro en preparación</button>
+      <div id="mensaje" role="status" aria-live="polite"></div>
+    </form>
+  </section>
 
-<div class="step">
-<span class="num">1</span>
-<strong>Registro</strong>
-<br>
-El socio proporciona o actualiza su información.
-</div>
-
-<div class="step">
-<span class="num">2</span>
-<strong>Recepción</strong>
-<br>
-La información queda identificada como pendiente de verificación.
-</div>
-
-<div class="step">
-<span class="num">3</span>
-<strong>Verificación</strong>
-<br>
-La administración revisará la información y sus respaldos.
-</div>
-
-<div class="step">
-<span class="num">4</span>
-<strong>Confirmación</strong>
-<br>
-Una vez validada, la información podrá incorporarse al registro institucional correspondiente.
-</div>
-
-</div>
-</section>
-
-
-<section id="registro" class="card">
-
-<h2>Registro voluntario de actualización de datos</h2>
-
-<div class="info">
-<strong>Versión de prueba para actualización de información.</strong>
-<br><br>
-Este formulario tiene como objetivo recibir datos de contacto y actualización de información de manera voluntaria, con fines de organización y preparación para una futura administración. No reemplaza el padrón oficial ni constituye una validación administrativa.
-</div>
-
-<form id="formRegistroVoluntario" novalidate>
-
-<label for="cedula">Cédula</label>
-<input id="cedula" name="cedula" maxlength="10" inputmode="numeric" placeholder="10 dígitos" required>
-
-<label for="nombre">Apellidos y nombres</label>
-<input id="nombre" name="nombre" placeholder="Ingrese sus apellidos y nombres" required>
-
-<label for="grado">Grado / categoría</label>
-<input id="grado" name="grado" placeholder="Ingrese su grado o categoría">
-
-<label for="tipo">Tipo de socio</label>
-<select id="tipo" name="tipo">
-<option value="">Seleccione una opción</option>
-<option>Activo</option>
-<option>Pasivo</option>
-<option>Vitalicio</option>
-<option>Otro / por verificar</option>
-</select>
-
-<label for="telefono">WhatsApp / celular</label>
-<input id="telefono" name="telefono" inputmode="tel" placeholder="Número de contacto" required>
-
-<label for="correo">Correo electrónico</label>
-<input id="correo" name="correo" type="email" placeholder="correo@ejemplo.com">
-
-<label for="ciudad">Ciudad de residencia</label>
-<input id="ciudad" name="ciudad" placeholder="Ciudad" required>
-
-<label for="pais">País</label>
-<input id="pais" name="pais" placeholder="Ej. Ecuador" value="Ecuador">
-
-<label for="domicilio">Domicilio</label>
-<input id="domicilio" name="domicilio" placeholder="Dirección de residencia">
-
-<label for="situacion">Situación actual</label>
-<select id="situacion" name="situacion">
-<option value="">Seleccione una opción</option>
-<option>Activo</option>
-<option>Pasivo</option>
-<option>Retirado</option>
-<option>Por verificar</option>
-<option>Otra situación</option>
-</select>
-
-<label for="observaciones">Observaciones</label>
-<textarea id="observaciones" name="observaciones" placeholder="Información adicional que considere importante"></textarea>
-
-<div class="checkbox-row">
-  <input type="checkbox" id="privacidad" name="privacidad" required>
-  <label for="privacidad">Acepto voluntariamente que mis datos sean recopilados para fines de actualización y organización del registro institucional, de conformidad con este aviso de privacidad.</label>
-</div>
-
-<button type="submit">Guardar mi actualización</button>
-
-<div id="mensaje"></div>
-</form>
-
-<div class="lista-registros">
-<h3>Registros localmente guardados</h3>
-<p class="small">Esta versión de prueba guarda las respuestas en el navegador para evidenciar el funcionamiento del flujo. No sustituye un almacenamiento seguro en servidor ni el registro oficial.</p>
-<ul id="listaRegistros"></ul>
-</div>
-
-<p class="small">
-<strong>Aviso de privacidad.</strong> La información recopilada en esta versión de prueba es voluntaria, será utilizada solo para la organización de la actualización de datos del proyecto CORTRIP y no reemplaza la documentación oficial ni el registro administrativo. La información podrá entregarse a la administración responsable cuando exista una autoridad legalmente constituida.
-</p>
-
-</section>
-
-
-<section id="consulta" class="card">
-
-<h2>Consulta de estado del registro</h2>
-
-<p>
-En la siguiente etapa cada socio podrá consultar el estado de su solicitud
- mediante un mecanismo seguro de identificación.
-</p>
-
-<div class="grid">
-
-<div class="step">
-<strong>Recibido</strong>
-<br>
-La información fue enviada.
-</div>
-
-<div class="step">
-<strong>En verificación</strong>
-<br>
-La administración está revisando los datos.
-</div>
-
-<div class="step">
-<strong>Documentación pendiente</strong>
-<br>
-Se requiere respaldo adicional.
-</div>
-
-<div class="step">
-<strong>Confirmado</strong>
-<br>
-La información fue validada administrativamente.
-</div>
-
-</div>
-
-</section>
-
-
-<section class="card">
-
-<h2>Principios del proyecto</h2>
-
-<div class="grid">
-
-<div>
-<strong>✓ Trazabilidad</strong>
-<br>
-Cada modificación deberá conservar su historial.
-</div>
-
-<div>
-<strong>✓ Verificación</strong>
-<br>
-El registro del socio no sustituye la revisión administrativa.
-</div>
-
-<div>
-<strong>✓ Fuentes</strong>
-<br>
-Los datos deberán conservar la referencia de su origen.
-</div>
-
-<div>
-<strong>✓ Control</strong>
-<br>
-La administración tendrá herramientas para revisar duplicados e inconsistencias.
-</div>
-
-<div>
-<strong>✓ Evolución</strong>
-<br>
-El módulo electoral será desarrollado como una etapa independiente.
-</div>
-
-<div>
-<strong>✓ Protección</strong>
-<br>
-Los datos reales no se publicarán en el repositorio público.
-</div>
-
-</div>
-
-</section>
-
+  <section id="principios" class="card">
+    <h2>Principios del proyecto</h2>
+    <div class="grid">
+      <div class="step"><strong>✓ Voluntariedad</strong><br>La participación es libre.</div>
+      <div class="step"><strong>✓ Verificación</strong><br>La información deberá ser revisada por la administración competente.</div>
+      <div class="step"><strong>✓ Uso limitado</strong><br>La finalidad es organizar la actualización y facilitar su entrega institucional.</div>
+      <div class="step"><strong>✓ Protección</strong><br>Los datos personales no se publicarán en este sitio ni en el repositorio de código.</div>
+    </div>
+  </section>
 </main>
-
-<footer>
-
-<strong>CORTRIP</strong>
-<br>
-
-Proyecto de modernización y actualización de información institucional
-
-</footer>
-
-<script>
-const STORAGE_KEY = 'cortrip_registro_voluntario';
-
-function guardarRegistro(registro) {
-  const existente = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  existente.push(registro);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(existente));
-}
-
-function renderRegistros() {
-  const lista = document.getElementById('listaRegistros');
-  const registros = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-
-  if (!registros.length) {
-    lista.innerHTML = '<li>No hay registros guardados todavía.</li>';
-    return;
-  }
-
-  lista.innerHTML = registros.map((r) => {
-    return '<li><strong>' + (r.nombre || 'Sin nombre') + '</strong> • Cédula: ' + (r.cedula || 'N/A') + ' • Ciudad: ' + (r.ciudad || 'N/A') + ' • Fecha: ' + (r.fecha || 'N/A') + '</li>';
-  }).join('');
-}
-
-function mostrarMensaje(texto, tipo) {
-  const contenedor = document.getElementById('mensaje');
-  contenedor.className = tipo === 'ok' ? 'mensaje-ok' : 'mensaje-error';
-  contenedor.innerHTML = texto;
-}
-
-function formatearFecha(date) {
-  return new Date(date).toLocaleString('es-EC', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-}
-
-document.getElementById('formRegistroVoluntario').addEventListener('submit', function (event) {
-  event.preventDefault();
-
-  const form = event.target;
-  const isValid = form.checkValidity();
-
-  if (!isValid) {
-    form.reportValidity();
-    return;
-  }
-
-  const data = Object.fromEntries(new FormData(form).entries());
-  data.fecha = formatearFecha(new Date());
-
-  try {
-    guardarRegistro(data);
-    renderRegistros();
-    form.reset();
-    mostrarMensaje('Registro guardado correctamente en esta versión de prueba. La información queda almacenada localmente en el navegador para evidenciar el flujo del proyecto.', 'ok');
-  } catch (error) {
-    mostrarMensaje('No se pudo guardar la información en este navegador. Verifique la configuración del sitio.', 'error');
-  }
-});
-
-renderRegistros();
-</script>
-
+<footer><strong>CORTRIP</strong><br>Proyecto de modernización y actualización de información institucional</footer>
+<script src="js/config.js"></script>
+<script src="js/registro.js" defer></script>
 </body>
 </html>
