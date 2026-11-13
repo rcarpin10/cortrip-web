@@ -1,0 +1,5 @@
+project_id = "cortrip-web"
+
+[functions.registro]
+# Endpoint público de recepción; la función valida el origen y Turnstile antes de insertar.
+verify_jwt = false

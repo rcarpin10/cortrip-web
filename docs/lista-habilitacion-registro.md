@@ -1,22 +1,30 @@
 # Preparar y habilitar el registro de actualización CORTRIP
 
-## Estado
+## Estado actual
 
-La página principal contiene el formulario de actualización voluntaria y muestra el alcance del proyecto. El envío sigue apagado en `js/config.js` hasta desplegar y probar el almacenamiento. No se guardan respuestas en el navegador ni en el repositorio.
+El sitio contiene una convocatoria y un formulario de actualización. El envío permanece desactivado en `js/config.js`: no se recopilan respuestas reales desde esta web hasta configurar y probar la base central. El formulario no almacena datos en el navegador.
 
-## Qué persigue el formulario
+## Finalidad y límites
 
-Organizar datos de contacto y declaraciones de situación para facilitar el cotejo futuro con registros disponibles, incluida la referencia al listado de 2012, y ponerlos a disposición de una futura administración competente para su revisión. La respuesta no verifica identidad o afiliación y no modifica registros oficiales. La situación indicada es una declaración de la persona que responde, no una decisión institucional.
+Las respuestas se organizarán para facilitar el cotejo con registros históricos y, cuando corresponda, ponerlas a disposición de una futura administración competente para revisión y gestión institucional. Las respuestas son declaraciones de los participantes; no verifican identidad, no determinan afiliación ni modifican un registro oficial. La participación en esta recopilación por sí sola no determina la calidad de socio ni derechos de voto. Cualquier decisión de ese tipo requiere las reglas y autoridad competentes.
 
-## Configuración de infraestructura
+## Infraestructura prevista
 
-1. Crear una cuenta controlada por la iniciativa, habilitar MFA y definir custodios y continuidad de acceso.
-2. Crear un proyecto Supabase y revisar región, términos, controles, disponibilidad de copias de seguridad y opciones de exportación del plan.
-3. Crear un widget Cloudflare Turnstile para el hostname final.
-4. Confirmar que el sitio público usa HTTPS y decidir el dominio exacto.
-5. Completar en `index.html` el nombre/contacto del responsable, ubicación y proveedor, plazo de conservación y canal para solicitudes de derechos. Actualizar el aviso y `aviso_version` en el SQL según corresponda. Revisar el texto con asesoría apropiada a la normativa aplicable.
-6. Ejecutar `supabase/schema.sql` en el SQL Editor del proyecto.
-7. Instalar la CLI de Supabase y desde la raíz del repositorio ejecutar:
+- Sitio estático por HTTPS.
+- Supabase Edge Function como receptor HTTPS; la clave de servicio permanece solo como secreto del servidor.
+- Tabla de solicitudes con RLS habilitado y sin lectura pública.
+- Cloudflare Turnstile para reducir envíos automatizados.
+- La iniciativa debe tener acceso administrativo seguro a la base para revisión y exportación controlada.
+
+## Pasos de despliegue
+
+1. Crear cuentas de servicio controladas por la iniciativa y activar MFA. Establecer quién puede acceder y un procedimiento de continuidad.
+2. Crear proyecto Supabase. Comprobar región, condiciones de tratamiento, controles, respaldo y exportación disponibles en el plan elegido.
+3. Crear widget de Cloudflare Turnstile con el hostname final.
+4. Confirmar el dominio y HTTPS del sitio web.
+5. Completar en `index.html` la identidad y contacto del responsable, ubicación/proveedor del almacenamiento, plazo de conservación y canal para solicitudes de derechos. Revisar el texto para que describa con exactitud quién administrará los datos y cómo se usarán.
+6. Aplicar `supabase/schema.sql` en el SQL Editor.
+7. Instalar la CLI de Supabase y configurar los secretos en el entorno de despliegue, nunca en el repositorio:
 
 ```sh
 supabase login
@@ -25,10 +33,10 @@ supabase secrets set SUPABASE_URL="https://TU_PROJECT_REF.supabase.co" SUPABASE_
 supabase functions deploy registro
 ```
 
-No guardes `SUPABASE_SERVICE_ROLE_KEY` ni `TURNSTILE_SECRET_KEY` en este repositorio, HTML, JavaScript público o mensajes. Si se exponen, rótalas.
+8. En `js/config.js`, introducir solo la URL pública del endpoint y la site key pública de Turnstile. Cambiar `registrationEnabled` a `true` únicamente después de configurar el aviso y completar pruebas.
+9. Probar con información ficticia el flujo de éxito y rechazo: validación, consentimiento, CAPTCHA, hostname y origen. Confirmar en el panel restringido que se insertó la respuesta y comprobar que visitantes no pueden consultar registros. Revisar que logs y mensajes no expongan datos personales.
+10. Definir respaldo, exportación cifrada, revisión y entrega a futura administración, con registro de quién accede y cuándo se eliminan los datos.
 
-8. En `js/config.js`, configurar el endpoint público de la función (`https://TU_PROJECT_REF.supabase.co/functions/v1/registro`) y la site key pública de Turnstile. Cambiar `registrationEnabled` a `true` solo tras completar el aviso y probar el sistema.
-9. Con datos ficticios, probar envío aceptado, consentimiento requerido, rechazo de datos inválidos, token/hostname incorrecto, almacenamiento en la tabla, ausencia de lectura pública y acceso administrativo protegido. Verificar logs para que no expongan datos personales.
-10. Definir procedimiento de respaldo, exportación cifrada, revisión y entrega a futura administración, y calendario de eliminación. No subir exportaciones al repositorio ni publicarlas en grupos.
+## Seguridad y alcance
 
-La API es pública para permitir la recepción desde el formulario. La verificación Turnstile, el origen y los límites del proveedor ayudan a reducir abuso, pero no garantizan la autenticidad del contenido ni sustituyen controles y revisión administrativa.
+La URL de recepción es pública para que los socios puedan enviar respuestas. CORS/origen y CAPTCHA ayudan a reducir abuso, pero no autentican a la persona ni garantizan la exactitud de lo declarado. No alojar cédulas, respuestas o exportaciones en GitHub. Este sistema no implementa padrón oficial, acreditación de membresía ni votación electrónica.

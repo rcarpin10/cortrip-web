@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Iniciativa voluntaria para actualizar la información de socios de CORTRIP, organizar su revisión y facilitar su entrega a una futura administración competente.">
-<title>CORTRIP | Actualización de información para revisión institucional</title>
+<meta name="description" content="Iniciativa para actualizar y organizar información de socios de CORTRIP para revisión por una futura administración competente.">
+<title>CORTRIP | Actualización de información de socios</title>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -16,40 +16,41 @@
   <a href="#inicio">Inicio</a>
   <a href="#proceso">Etapas</a>
   <a href="#registro">Actualizar información</a>
-  <a href="#principios">Compromisos</a>
+  <a href="#futuro">Siguientes pasos</a>
 </nav>
 <main>
   <section id="inicio" class="hero">
-    <h2>Actualización de información de socios</h2>
-    <p>Una iniciativa voluntaria para actualizar datos de contacto y organizar la información relacionada con los registros de CORTRIP. Busca facilitar el cotejo y la revisión por una futura administración competente, y apoyar las gestiones institucionales que correspondan, incluida una eventual presentación ante el Ministerio del Trabajo.</p>
-    <div class="notice"><strong>Alcance de esta iniciativa:</strong> es una recopilación independiente y voluntaria. No reemplaza el registro oficial, no determina la calidad de socio y no modifica por sí misma el listado institucional o ministerial. La información declarada quedará pendiente de cotejo y verificación por la administración competente.</div>
+    <h2>Actualicemos la información de los socios de CORTRIP</h2>
+    <p>Contar con información actualizada es un paso concreto para organizar el trabajo institucional. Invitamos a los socios, en Ecuador y en el exterior, a revisar y aportar sus datos para facilitar el cotejo del listado histórico, la preparación de una base organizada y el trabajo de una futura administración.</p>
+    <div class="notice"><strong>Propósito:</strong> reunir y organizar información para entregarla a una futura administración competente, que podrá revisarla y determinar las gestiones institucionales pertinentes, incluida una eventual actualización ante el Ministerio del Trabajo. Esta iniciativa no reemplaza el registro oficial ni certifica por sí misma identidad o calidad de socio.</div>
+    <p><strong>La participación de cada socio ayuda a que el proceso avance con información más completa y actual.</strong> Por favor, responde con datos correctos y mantén tus medios de contacto vigentes.</p>
   </section>
 
   <section id="proceso" class="card">
     <h2>Etapas del trabajo</h2>
     <div class="grid">
-      <article class="step"><span class="num">1</span><strong>Convocatoria</strong><br>Invitación abierta a socios y personas que deseen actualizar o aclarar información.</article>
-      <article class="step"><span class="num">2</span><strong>Recepción</strong><br>El formulario, una vez habilitado, enviará la información a un almacenamiento privado.</article>
-      <article class="step"><span class="num">3</span><strong>Organización y cotejo</strong><br>Preparación de registros para revisión; la información declarada no se considera validada automáticamente.</article>
-      <article class="step"><span class="num">4</span><strong>Entrega institucional</strong><br>La información podrá entregarse de forma controlada a una futura administración para su análisis y las gestiones que considere pertinentes.</article>
+      <article class="step"><span class="num">1</span><strong>Actualización</strong><br>El socio informa sus datos actuales y declara la situación que desea que se revise.</article>
+      <article class="step"><span class="num">2</span><strong>Recepción y organización</strong><br>El sistema recibirá las respuestas en un almacenamiento privado cuando el servicio esté habilitado.</article>
+      <article class="step"><span class="num">3</span><strong>Cotejo posterior</strong><br>La información podrá compararse con los registros históricos disponibles; cada respuesta requerirá revisión.</article>
+      <article class="step"><span class="num">4</span><strong>Entrega institucional</strong><br>Una futura administración competente podrá analizar los datos y decidir las gestiones oficiales correspondientes.</article>
     </div>
-    <p class="small"><strong>Estado del proyecto:</strong> sitio y estructura del formulario preparados; conexión de base de datos y habilitación de recepción pendientes de configuración y pruebas.</p>
+    <p class="small"><strong>Avance:</strong> formulario y estructura técnica preparados. La recepción centralizada está pendiente de configurar y probar; por ahora el sitio no recibe ni guarda respuestas.</p>
   </section>
 
   <section id="registro" class="card">
-    <h2>Formulario voluntario de actualización</h2>
+    <h2>Formulario de actualización de información</h2>
     <div id="estadoServicio" class="info" role="status" aria-live="polite"></div>
-    <p>Los campos con * son necesarios para enviar la solicitud cuando el servicio esté habilitado. Puedes indicar que no sabes o pedir revisión; tus respuestas no constituyen una certificación de afiliación.</p>
+    <p>La información que proporciones servirá para organizar una solicitud de revisión de registros. Completa con atención los campos requeridos; puedes indicar que no conoces una respuesta o solicitar que tu situación sea cotejada.</p>
 
     <form id="formRegistro" novalidate>
       <label for="cedula">Número de cédula *</label>
       <input id="cedula" name="cedula" autocomplete="off" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 dígitos" required>
-      <small>Se solicita para facilitar un cotejo posterior con registros disponibles. El envío no autentica identidad ni calidad de socio.</small>
+      <small>Se utilizará para facilitar el cotejo posterior con registros disponibles. El envío no autentica identidad ni determina afiliación.</small>
 
       <label for="nombre">Apellidos y nombres *</label>
       <input id="nombre" name="nombre" autocomplete="name" maxlength="160" placeholder="Nombres completos" required>
 
-      <label for="situacionDeclarada">Situación que declara respecto a CORTRIP *</label>
+      <label for="situacionDeclarada">Situación que declaras respecto a CORTRIP *</label>
       <select id="situacionDeclarada" name="situacionDeclarada" required>
         <option value="">Seleccione una opción</option>
         <option>Me considero socio/a y deseo actualizar mis datos</option>
@@ -59,10 +60,10 @@
         <option>No estoy seguro/a; solicito cotejo</option>
         <option>Otra situación; explicaré solo lo necesario en observaciones</option>
       </select>
-      <small>Es una declaración de la persona que responde, no una calificación oficial ni una decisión sobre su afiliación.</small>
+      <small>Es una declaración de quien responde; no constituye una calificación ni una decisión oficial.</small>
 
       <label for="telefono">WhatsApp o celular *</label>
-      <input id="telefono" name="telefono" autocomplete="tel" type="tel" maxlength="40" placeholder="Incluya código de país si reside fuera de Ecuador" required>
+      <input id="telefono" name="telefono" autocomplete="tel" type="tel" maxlength="40" placeholder="Incluye código de país si resides fuera de Ecuador" required>
 
       <label for="correo">Correo electrónico (opcional)</label>
       <input id="correo" name="correo" autocomplete="email" type="email" maxlength="254" placeholder="nombre@ejemplo.com">
@@ -79,16 +80,16 @@
       </select>
 
       <label for="observaciones">Información adicional (opcional)</label>
-      <textarea id="observaciones" name="observaciones" maxlength="1000" placeholder="Añade solo información necesaria para aclarar tu registro. No incluyas contraseñas ni documentos. Para reportar información de una persona fallecida, espera a que se habilite un procedimiento específico."></textarea>
+      <textarea id="observaciones" name="observaciones" maxlength="1000" placeholder="Incluye solo información necesaria para aclarar tu registro. No incluyas contraseñas ni documentos."></textarea>
 
       <div class="privacy-box">
         <h3>Aviso sobre recopilación y uso de información</h3>
-        <p>Esta iniciativa voluntaria recopila los datos del formulario para organizar una actualización independiente, facilitar el cotejo con registros históricos disponibles y, cuando exista una administración competente, poner la información a su disposición para revisión y eventual gestión institucional, incluida la que corresponda ante el Ministerio del Trabajo. No es el padrón oficial ni confirma identidad o calidad de socio.</p>
-        <p>La información no se publicará en la página ni en el repositorio de código. Antes de recibir datos reales se completarán en este aviso la identidad y contacto de la persona responsable, el servicio y país de almacenamiento, el plazo de conservación y el canal para solicitar acceso, corrección o eliminación. El envío estará deshabilitado hasta que se completen esos datos y se pruebe el almacenamiento privado.</p>
-        <p id="avisoResponsable"><strong>Estado:</strong> el registro en línea aún no está habilitado. No ingreses datos reales mientras la conexión y el aviso completo no estén publicados.</p>
+        <p>Esta iniciativa recopila información para organizar una actualización, facilitar el cotejo con registros históricos disponibles y poner los datos a disposición de una futura administración competente para su revisión y las gestiones institucionales que correspondan, incluida una eventual presentación ante el Ministerio del Trabajo. El formulario no constituye el padrón oficial ni confirma identidad o calidad de socio.</p>
+        <p>La información no se publicará en la página ni en el repositorio de código. Antes de recibir datos reales se completarán en este aviso la identidad y contacto de quien administra la recopilación, el proveedor y ubicación del almacenamiento, el plazo de conservación y el canal para solicitar acceso, corrección o eliminación. El envío seguirá deshabilitado hasta que se configure y pruebe la recepción privada.</p>
+        <p id="avisoResponsable"><strong>Estado del registro:</strong> preparación técnica en curso; este formulario aún no envía ni guarda respuestas. No ingreses datos reales todavía.</p>
         <div class="checkbox-row">
           <input type="checkbox" id="consentimiento" name="consentimiento" required>
-          <label for="consentimiento">He leído el aviso completo y autorizo voluntariamente el tratamiento de la información para las finalidades descritas. *</label>
+          <label for="consentimiento">He leído el aviso completo y autorizo el tratamiento de la información para las finalidades descritas. *</label>
         </div>
       </div>
 
@@ -98,14 +99,11 @@
     </form>
   </section>
 
-  <section id="principios" class="card">
-    <h2>Compromisos del proyecto</h2>
-    <div class="grid">
-      <div class="step"><strong>✓ Participación voluntaria</strong><br>Cada persona decide si aporta su información.</div>
-      <div class="step"><strong>✓ Revisión posterior</strong><br>Las declaraciones no sustituyen la verificación administrativa.</div>
-      <div class="step"><strong>✓ Uso informado</strong><br>Se explicará quién administra los datos y para qué se utilizan.</div>
-      <div class="step"><strong>✓ Protección</strong><br>Los datos personales no se publicarán en el sitio ni en el repositorio.</div>
-    </div>
+  <section id="futuro" class="card">
+    <h2>Una base para el trabajo posterior</h2>
+    <p>La actualización de información es una etapa de organización y cotejo. La revisión de afiliación, la elaboración o aprobación de un padrón y cualquier gestión ante autoridades corresponden a las instancias y procedimientos competentes.</p>
+    <p>Un mecanismo de votación electrónica podría evaluarse en una etapa futura, después de contar con reglas aprobadas, un padrón validado por la autoridad competente y controles verificables de elegibilidad, secreto, integridad, auditoría y accesibilidad. Esta página no habilita votaciones ni determina derechos de participación.</p>
+    <div class="notice"><strong>Importante:</strong> la no presentación de este formulario no determina por sí sola la pérdida de la calidad de socio ni del derecho al voto. Esas condiciones dependen de las normas aplicables y de las decisiones de la autoridad competente.</div>
   </section>
 </main>
 <footer><strong>CORTRIP</strong><br>Iniciativa de actualización y organización de información institucional</footer>
