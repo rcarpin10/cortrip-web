@@ -1,8 +1,7 @@
 window.CORTRIP_CONFIG = Object.freeze({
-  // Mantener desactivado hasta desplegar y probar Pages + D1.
+  // No activar hasta completar despliegue, aviso, pruebas y revisión de acceso a los datos.
   registrationEnabled: false,
-  // Endpoint relativo: el formulario y la función se sirven desde el mismo dominio.
   registrationEndpoint: '/api/registro',
-  // Esta clave es pública; la clave secreta se configura solo en Cloudflare Pages.
+  // Clave pública de Turnstile: configurar después de crear el widget para el dominio final.
   turnstileSiteKey: ''
 });

@@ -1,43 +1,33 @@
 # Preparación de almacenamiento CORTRIP con Cloudflare Pages y D1
 
-## Estado del código
+## Estado actual
 
-La página incluye el formulario; `functions/api/registro.ts` recibe los envíos en la ruta del mismo dominio `/api/registro` y escribe en D1. `js/config.js` mantiene `registrationEnabled: false`, por lo que la recepción permanece apagada. No almacenar respuestas reales hasta terminar los pasos y pruebas.
+El código prepara la función `/api/registro`, la migración D1 y el formulario. La opción de envío continúa apagada en `js/config.js`. Todavía falta crear la cuenta/proyecto Cloudflare, base D1, widget Turnstile, publicar Pages y probar los bindings. No ingresar ni solicitar datos reales mientras el botón siga desactivado.
 
-## Crear el servicio
+## Pasos operativos
 
-1. Crear/iniciar sesión en una cuenta Cloudflare controlada por la iniciativa y activar autenticación multifactor. Añadir solo custodios necesarios.
-2. Crear un proyecto D1 llamado `cortrip-registro` (Cloudflare Dashboard → Workers & Pages → D1 SQL database) o desde terminal con Wrangler instalado:
-
-```sh
-npx wrangler login
-npx wrangler d1 create cortrip-registro
-```
-
-3. Copiar el `database_id` devuelto a `wrangler.toml`, y completar `ALLOWED_ORIGIN` y `ALLOWED_HOSTNAME` con el dominio final HTTPS. No usar el dominio de ejemplo en producción.
-4. Aplicar la migración local:
+1. Crear o utilizar una cuenta Cloudflare controlada por la iniciativa; activar MFA y añadir custodios. No depender de una sola cuenta personal.
+2. Crear un proyecto D1 `cortrip-registro` desde Cloudflare Dashboard o ejecutar `npx wrangler d1 create cortrip-registro`; copiar el ID a `wrangler.toml`.
+3. Crear el widget Turnstile para el hostname Pages final. La site key se publica en `js/config.js`; la secret key se almacena como secreto en Cloudflare, nunca en el repositorio.
+4. Completar en `wrangler.toml` `ALLOWED_ORIGIN` y `ALLOWED_HOSTNAME` con el dominio HTTPS exacto. No usar placeholders.
+5. En una terminal local con Wrangler, ejecutar `npx wrangler login` y aplicar la migración:
 
 ```sh
 npx wrangler d1 migrations apply cortrip-registro --remote
 ```
 
-5. Crear un widget Cloudflare Turnstile para el hostname final. La **site key** es pública y se configura en `js/config.js`; la **secret key** debe configurarse como secreto del proyecto Pages, nunca en el repositorio ni en `wrangler.toml`:
+6. Conectar `cortrip-web` a Cloudflare Pages. Configuración de compilación: framework `None`, directorio de salida `.` (raíz). Confirmar que detecta `functions/api/registro.ts` y el binding D1 con nombre `DB`.
+7. Configurar las variables `ALLOWED_ORIGIN` y `ALLOWED_HOSTNAME` como variables de entorno de Pages para producción y preview, según corresponda. Configurar `TURNSTILE_SECRET_KEY` como secreto del proyecto:
 
 ```sh
 npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name cortrip-web
 ```
 
-6. Publicar la carpeta del sitio mediante Cloudflare Pages, conectando el repositorio o usando Wrangler. Configurar el directorio de salida como `.` (raíz) y verificar que Pages reconoce la función `functions/api/registro.ts` y el enlace D1.
-7. Solo después de que exista el dominio final, ajustar `ALLOWED_ORIGIN` / `ALLOWED_HOSTNAME`, endpoint `/api/registro` y site key pública de Turnstile.
+8. Ajustar `js/config.js` con la site key pública Turnstile. Mantener `registrationEnabled: false`.
+9. Probar primero localmente con D1 local y tokens de prueba, y después en un deployment preview con dominio y widget de prueba. Verificar inserción, validaciones, rechazo de CAPTCHA y que no existe endpoint de lectura pública. Eliminar registros ficticios.
+10. Completar y publicar el aviso de privacidad con responsable, contacto, proveedor/ubicación, finalidad, conservación y canal de solicitudes. Definir accesos, exportación cifrada y respaldo de datos.
+11. Solo tras revisión técnica/operativa, abrir un cambio para activar `registrationEnabled: true`.
 
-## Pruebas obligatorias con datos ficticios
+## Seguridad y continuidad
 
-- En modo local, ejecutar `npx wrangler pages dev .` con los bindings D1 de desarrollo y probar el formulario con datos inventados.
-- Confirmar respuestas válidas, rechazo de campos inválidos, falta de consentimiento y CAPTCHA incorrecto.
-- Revisar en el panel D1 que se guarda una fila de prueba; comprobar que no existe endpoint público para consultar filas.
-- Confirmar que no se registran cédulas, teléfonos ni cuerpos de solicitud en logs.
-- Borrar la fila de prueba antes de abrir el formulario.
-
-## Operación
-
-La base almacena solicitudes declarativas para revisión posterior; no autentica a la persona ni determina afiliación o derechos de voto. Definir accesos administrativos, proceso de exportación cifrada, respaldos periódicos, conservación/eliminación y quién recibirá los datos en el futuro. Verificar los límites vigentes del plan gratuito y tener en cuenta que el servicio podría limitar solicitudes o cambiar sus condiciones. La recepción pública debe tener controles antiabuso activos.
+El secreto Turnstile es una variable de entorno secreta, no `[vars]` ni código. El binding D1 solo se usa desde la función; no crear API de consulta pública. No registrar cuerpo, cédula, teléfono, correo ni observaciones en logs. Turnstile reduce abuso, pero no prueba identidad. Revisar límites y condiciones del plan gratuito y disponer de exportaciones de respaldo antes de recopilar respuestas. Las reglas de afiliación, padrón y voto corresponden a procesos y autoridades competentes.

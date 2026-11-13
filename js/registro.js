@@ -2,12 +2,15 @@
   'use strict';
   const config = window.CORTRIP_CONFIG || {};
   const form = document.getElementById('formRegistro');
+  if (!form) return;
+
   const statusBox = document.getElementById('estadoServicio');
   const button = document.getElementById('submitButton');
   const message = document.getElementById('mensaje');
   const captchaContainer = document.getElementById('turnstileContainer');
   let captchaWidgetId = null;
   let captchaLoaded = false;
+  let captchaFailed = false;
 
   function setMessage(text, isError) {
     message.textContent = text;
@@ -24,14 +27,13 @@
     }
   }
   function configureCaptcha() {
-    if (!config.turnstileSiteKey) return;
     captchaContainer.hidden = false;
     window.onTurnstileLoaded = function () {
       captchaWidgetId = window.turnstile.render('#turnstileWidget', {
         sitekey: config.turnstileSiteKey,
         theme: 'light',
         action: 'registro',
-        callback: function () { captchaLoaded = true; },
+        callback: function () { captchaLoaded = true; captchaFailed = false; },
         'expired-callback': function () { captchaLoaded = false; },
         'error-callback': function () { captchaLoaded = false; }
       });
@@ -41,14 +43,14 @@
     script.async = true;
     script.defer = true;
     script.onerror = function () {
+      captchaFailed = true;
       setMessage('No se pudo cargar la verificación de seguridad. Inténtalo más tarde.', true);
       setReady(false);
     };
     document.head.appendChild(script);
   }
 
-  const validEndpoint = typeof config.registrationEndpoint === 'string' &&
-    (config.registrationEndpoint === '/api/registro' || config.registrationEndpoint.startsWith('https://'));
+  const validEndpoint = config.registrationEndpoint === '/api/registro';
   const ready = config.registrationEnabled === true && validEndpoint && Boolean(config.turnstileSiteKey);
   setReady(ready);
   if (ready) {
@@ -58,8 +60,8 @@
 
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
-    if (!ready) {
-      setMessage('El registro aún no está habilitado; no se ha enviado ni guardado información.', true);
+    if (!ready || captchaFailed) {
+      setMessage('El registro no está disponible; no se ha enviado ni guardado información.', true);
       return;
     }
     if (!form.reportValidity()) return;
@@ -94,8 +96,10 @@
       captchaLoaded = false;
       if (window.turnstile && captchaWidgetId !== null) window.turnstile.reset(captchaWidgetId);
     } finally {
-      button.disabled = false;
-      button.textContent = 'Enviar actualización';
+      if (!captchaFailed) {
+        button.disabled = false;
+        button.textContent = 'Enviar actualización';
+      }
     }
   });
 })();
