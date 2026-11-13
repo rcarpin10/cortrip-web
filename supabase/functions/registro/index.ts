@@ -1,9 +1,12 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
 
+const allowedOrigin = Deno.env.get('ALLOWED_ORIGIN') ?? '';
+const allowedHostname = Deno.env.get('ALLOWED_HOSTNAME') ?? '';
 const corsHeaders = {
-  'Access-Control-Allow-Origin': Deno.env.get('ALLOWED_ORIGIN') ?? 'null',
+  'Access-Control-Allow-Origin': allowedOrigin || 'null',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Max-Age': '86400',
   'Vary': 'Origin',
 };
 
@@ -24,21 +27,28 @@ Deno.serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (request.method !== 'POST') return jsonResponse({ error: 'Método no permitido.' }, 405);
 
-  const allowedOrigin = Deno.env.get('ALLOWED_ORIGIN');
   if (!allowedOrigin || request.headers.get('origin') !== allowedOrigin) {
     return jsonResponse({ error: 'Origen no permitido.' }, 403);
   }
+  if (!request.headers.get('content-type')?.toLowerCase().startsWith('application/json')) {
+    return jsonResponse({ error: 'Formato de solicitud no válido.' }, 415);
+  }
+  const contentLength = Number(request.headers.get('content-length') || '0');
+  if (contentLength > 16_384) return jsonResponse({ error: 'Solicitud demasiado grande.' }, 413);
 
   const turnstileSecret = Deno.env.get('TURNSTILE_SECRET_KEY');
   const supabaseUrl = Deno.env.get('SUPABASE_URL');
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-  if (!turnstileSecret || !supabaseUrl || !serviceKey) {
+  if (!turnstileSecret || !supabaseUrl || !serviceKey || !allowedHostname) {
     return jsonResponse({ error: 'Servicio temporalmente no disponible.' }, 503);
   }
 
   let body: Record<string, unknown>;
   try {
-    body = await request.json();
+    const raw = await request.text();
+    if (raw.length > 16_384) return jsonResponse({ error: 'Solicitud demasiado grande.' }, 413);
+    body = JSON.parse(raw);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('Invalid body');
   } catch {
     return jsonResponse({ error: 'Solicitud inválida.' }, 400);
   }
@@ -54,16 +64,20 @@ Deno.serve(async (request) => {
   const observaciones = body.observaciones === '' || body.observaciones == null
     ? null
     : cleanString(body.observaciones, 1000);
+  const consentimiento = body.consentimiento === 'on' || body.consentimiento === true;
 
-  if (!token || !cedula || !/^[0-9]{10}$/.test(cedula) || !nombre || !telefono || !ciudad || !pais ||
-      (body.correo && !correo) || (body.categoria && !categoria) || (body.observaciones && !observaciones)) {
+  const categoriasPermitidas = new Set([
+    'Activo', 'Pasivo', 'Vitalicio', 'Otro / por verificar', 'Prefiero no indicar / no sé',
+  ]);
+  const correoValido = correo === null || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+  if (!token || !consentimiento || !cedula || !/^[0-9]{10}$/.test(cedula) || !nombre || nombre.length < 2 ||
+      !telefono || telefono.length < 5 || !ciudad || !pais || !correoValido ||
+      (body.correo && !correo) || (body.categoria && (!categoria || !categoriasPermitidas.has(categoria))) ||
+      (body.observaciones && !observaciones)) {
     return jsonResponse({ error: 'Revisa los campos e intenta nuevamente.' }, 400);
   }
 
-  const captchaBody = new URLSearchParams({
-    secret: turnstileSecret,
-    response: token,
-  });
+  const captchaBody = new URLSearchParams({ secret: turnstileSecret, response: token });
   const remoteIp = request.headers.get('cf-connecting-ip');
   if (remoteIp) captchaBody.set('remoteip', remoteIp);
 
@@ -71,9 +85,13 @@ Deno.serve(async (request) => {
     const captchaResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       body: captchaBody,
+      signal: AbortSignal.timeout(8000),
     });
+    if (!captchaResponse.ok) return jsonResponse({ error: 'No se pudo validar la verificación de seguridad.' }, 400);
     const captchaResult = await captchaResponse.json();
-    if (!captchaResult.success) return jsonResponse({ error: 'No se pudo validar la verificación de seguridad.' }, 400);
+    if (!captchaResult.success || captchaResult.hostname !== allowedHostname || captchaResult.action !== 'registro') {
+      return jsonResponse({ error: 'No se pudo validar la verificación de seguridad.' }, 400);
+    }
 
     const supabase = createClient(supabaseUrl, serviceKey, {
       auth: { persistSession: false, autoRefreshToken: false },

@@ -33,7 +33,8 @@
     window.onTurnstileLoaded = function () {
       captchaWidgetId = window.turnstile.render('#turnstileWidget', {
         sitekey: config.turnstileSiteKey,
-        theme: 'light'
+        theme: 'light',
+        action: 'registro'
       });
     };
     const script = document.createElement('script');
@@ -76,7 +77,6 @@
 
     const payload = Object.fromEntries(new FormData(form).entries());
     payload.captchaToken = captchaToken;
-    delete payload.consentimiento;
     button.disabled = true;
     button.textContent = 'Enviando…';
     message.textContent = '';
